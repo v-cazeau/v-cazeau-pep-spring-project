@@ -11,6 +11,11 @@ import java.util.*;
 public class MessageService {
 
     private List<Message> messages = new ArrayList<>();
+
+    //#3 process the creation of new messages.
+    public void addNewMessage(Message newMessage) {
+        messages.add(newMessage);
+    }
     
     // #4 retrieve all messages.
     public List <Message> getAllMessages() {
