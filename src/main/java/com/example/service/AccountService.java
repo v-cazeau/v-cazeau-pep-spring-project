@@ -16,37 +16,33 @@ import javax.naming.AuthenticationException;
 @Service
 public class AccountService {
 
-    // private List<Account> accounts = new ArrayList<>();
-    // private MessageService messageService;
-
-    // @Autowired
-    // public AccountService (MessageService messageService) {
-    //     this.messageService = messageService;
-    // }
+    public AccountRepository accountRepository;
 
     @Autowired
-    private AccountRepository accountRepository;
+    public AccountService (AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     // #1 process new User registrations.
-    // public Account register(Account newAccount) throws ResourceNotFoundException, Exception {
-    //    if(newAccount.getUsername().isBlank() || newAccount.getPassword().length() < 4) {
-    //     throw new ResourceNotFoundException("Invalid username or password");
-    //    }
-    //    if (accountRepository.findByUsername(newAccount.getUsername() != null)) {
-    //     throw new Exception("Username already exists");
-    //    }
-    //    return accountRepository.save(newAccount);
-    //    }
-    // }
+    public Account register(Account newAccount)  {
+       if(newAccount.getUsername().isBlank() || newAccount.getPassword().length() < 4) {
+        return null;
+       }
+       return accountRepository.save(newAccount);
+    
+    }
+
+    public Account findAccountByUsername(String username) {
+        return accountRepository.findAccountByUsername(username); 
+    }
 
 //    //#2 process User logins.
-//     public void login(String username, String password) throws AuthenticationException {
-//         for (Account account:accounts) {
-//             if(account.getUsername().equals(username) && account.getPassword().equals(password)) {
-//                 return;
-//             };
-//         }
-//         throw new AuthenticationException("Check username and password");
-//     }
+    public Account login(Account account) {
+            Account login = accountRepository.findAccountByUsername(account.getUsername());
+            if(login != null && login.getPassword().equals(account.getPassword())) {
+                return account;
+            } 
+            return null;
+    }
 
 }

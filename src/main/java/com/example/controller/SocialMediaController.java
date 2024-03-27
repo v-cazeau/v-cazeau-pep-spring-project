@@ -52,67 +52,67 @@ public class SocialMediaController {
     }
 
     // #1 process new User registrations.
-    // @PostMapping("register")
-    // public @ResponseBody ResponseEntity<?> register(@RequestBody Account account) throws ResourceNotFoundException, Exception {
-    //     try {
-    //         Account registeredAccount = accountService.register(account);
-    //         return ResponseEntity.ok(registeredAccount);
-    //     } catch (ResourceNotFoundException e) {
-            
-    //         return ResponseEntity.badRequest().body("Invalid username or password.");
-    //     } catch (Exception e) {
+    @PostMapping("register")
+    public ResponseEntity<?> register(@RequestBody Account account) {
+            Account registeredAccount = accountService.findAccountByUsername(account.getUsername());
+            if (registeredAccount != null)
+                return ResponseEntity.status(409).body(null);
 
-    //         return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists.");
-    //     }
-        
-    // }
+            Account verifiedAccount = accountService.register(account);
+            if (verifiedAccount != null) {
+                return ResponseEntity.ok(verifiedAccount);
+            } else {
+                return ResponseEntity.status(400).body(null);
+            }
+    }
 
 
     // #2 process User logins.
-    // @PostMapping("login")
-    // public @ResponseBody ResponseEntity<Void> login(@RequestBody Account account) throws AuthenticationException {
-    //     accountService.login(account.getUsername(), account.getPassword());
-    //     return ResponseEntity.noContent()
-    //         .header("username", account.getUsername())
-    //         .build();
-    // }
+    @PostMapping("login")
+    public ResponseEntity<Account> login(@RequestBody Account account) throws AuthenticationException {
+        Account login = accountService.findAccountByUsername(account.getUsername());
+        if (login != null && login.getPassword().equals(account.getPassword())) {
+            return ResponseEntity.status(200).body(login);
+        }
+        return ResponseEntity.status(401).body(null);
+    }
 
     // #3 process the creation of new messages.
-    @PostMapping("messages")
-    public @ResponseBody ResponseEntity<Message> addNewMessage(@RequestBody Message newMessage) {
-        Message createdMessage = messageService.addNewMessage(newMessage);
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(createdMessage);
-    }
+    // @PostMapping("messages")
+    // public ResponseEntity<Message> addNewMessage(@RequestBody Message newMessage) {
+    //     Message createdMessage = messageService.addNewMessage(newMessage);
+    //     return ResponseEntity.status(HttpStatus.CREATED)
+    //         .body(createdMessage);
+    // }
 
 
-    // #4 retrieve all messages.
-    @GetMapping("messages")
-    public @ResponseBody List<Message> getAllMessages() {
-        return messageService.getAllMessages();
-    }
+    // // #4 retrieve all messages.
+    // @GetMapping("messages")
+    // public @ResponseBody List<Message> getAllMessages() {
+    //     return messageService.getAllMessages();
+    // }
 
-    // #5 retrieve a message by its ID.
-    @GetMapping("messages/{message_id}")
-    public ResponseEntity<Message> MessageById(@PathVariable int message_id) {
-        Message messages = messageService.getMessageById(message_id);
-        return ResponseEntity.ok()
-            .body(messages);
-    }
+    // // #5 retrieve a message by its ID.
+    // @GetMapping("messages/{message_id}")
+    // public ResponseEntity<Message> MessageById(@PathVariable int message_id) {
+    //     Message messages = messageService.getMessageById(message_id);
+    //     return ResponseEntity.ok()
+    //         .body(messages);
+    // }
 
-    //#6 delete a message identified by a message ID.
+    // //#6 delete a message identified by a message ID.
 
-    @DeleteMapping("messages/{message_id}")
-    public ResponseEntity<?> deleteMessage(@PathVariable int message_id) {
-        boolean deleted = messageService.deleteMessage(message_id); 
-        if (deleted) {
-            return ResponseEntity.ok()
-                .body(1);
-        } else {
-            return ResponseEntity.ok()
-                .body(null);
-        }
-    }
+    // @DeleteMapping("messages/{message_id}")
+    // public ResponseEntity<?> deleteMessage(@PathVariable int message_id) {
+    //     boolean deleted = messageService.deleteMessage(message_id); 
+    //     if (deleted) {
+    //         return ResponseEntity.ok()
+    //             .body(1);
+    //     } else {
+    //         return ResponseEntity.ok()
+    //             .body(null);
+    //     }
+    // }
 
     // #7 update a message text identified by a message ID.
 
