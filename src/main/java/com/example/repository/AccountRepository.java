@@ -7,5 +7,5 @@ import com.example.entity.Account;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
     Account findAccountByUsername(String username);
 
-    boolean findAccountByUsername(boolean b); //added from line 35 on accountService
+    boolean findAccountByUsername(boolean b);
 }

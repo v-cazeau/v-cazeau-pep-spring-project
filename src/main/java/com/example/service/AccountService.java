@@ -30,7 +30,7 @@ public class AccountService {
         return accountRepository.findAccountByUsername(username); 
     }
 
-//    //#2 process User logins.
+    //#2 process User logins.
     public Account login(Account account) {
             Account login = accountRepository.findAccountByUsername(account.getUsername());
             if(login != null && login.getPassword().equals(account.getPassword())) {
