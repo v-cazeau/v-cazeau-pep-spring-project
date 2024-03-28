@@ -60,17 +60,24 @@ public class MessageService {
         Message updatedMessage = messageRespository.findById(message_id).orElse(messageUpdate);
         Optional<Message> existingMessage = messageRespository.findById(message_id);
 
-        if (existingMessage.isPresent() && messageUpdate != null && !messageUpdate.getMessage_text().isBlank() && updatedMessage.getMessage_text().length() < 255) {
-            messageRespository.save(updatedMessage);
-            return 1;
+        if (!existingMessage.isPresent()) {
+            return 0;
         }
-        return 0;
+        if (messageUpdate != null && messageUpdate.getMessage_text().isBlank()) {
+            return 0;
+        }
+        if (messageUpdate.getMessage_text().length() > 255) {
+            return 0;
+        }
+        messageRespository.save(updatedMessage);
+        return 1;
 
     }
 
-    // #8 retrieve all messages written by a particular user.
-    public List<Message> getAllMessagesByUser(int message_id) throws ResourceNotFoundException {
-       return getAllMessagesByUser(message_id);
-        }
+    // // #8 retrieve all messages written by a particular user.
+    // public List<Message> getAllMessagesByUser(int posted_by) {
+    //     return messageRespository.getMessagesByAccountId(posted_by);
+    
+    //     }
 
 }

@@ -124,20 +124,23 @@ public class SocialMediaController {
     // #7 update a message text identified by a message ID.
 
     @PatchMapping("messages/{message_id}")
-    public ResponseEntity<Integer> updateMessage(@RequestParam "message_id"
-                                                    Integer variable 
-                                    @ResquestBody Message updatedMessage) {
-        messageService.updateMessage(updatedMessage);
-        return ResponseEntity.ok()
-                .body();
+    public ResponseEntity<Integer> updateMessage(@PathVariable int message_id, 
+                                            @RequestBody Message updatedMessage) {
+        int update = messageService.updateMessage(message_id, updatedMessage);
+
+        if(update != 0) {
+            return ResponseEntity.ok()
+                .body(1);
+        } else {
+            return ResponseEntity.badRequest()
+                .body(null);
         }
+    }
 
     // #8 retrieve all messages written by a particular user.
     
     // @GetMapping("accounts/{account_id}/messages")
-    // public @ResponseBody ResponseEntity<List<Message>> getAllMessagesByUser(@PathVariable int account_id) {
-    //     List<Message> messagesByUser = messageService.getAllMessagesByUser(account_id); //add @query to repo
-    //     return ResponseEntity.ok()
-    //             .body(getAllMessages());
+    // public ResponseEntity<List<Message>> getAllMessagesByUser(@PathVariable int account_id) { 
+    //     return ResponseEntity.ok(messageService.getAllMessagesByUser(account_id));
     // }
 }
