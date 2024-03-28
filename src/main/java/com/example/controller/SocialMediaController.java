@@ -139,8 +139,8 @@ public class SocialMediaController {
 
     // #8 retrieve all messages written by a particular user.
     
-    // @GetMapping("accounts/{account_id}/messages")
-    // public ResponseEntity<List<Message>> getAllMessagesByUser(@PathVariable int account_id) { 
-    //     return ResponseEntity.ok(messageService.getAllMessagesByUser(account_id));
-    // }
+    @GetMapping("accounts/{account_id}/messages")
+    public ResponseEntity<List<Message>> getAllMessagesByUser(@PathVariable int account_id) { 
+        return ResponseEntity.ok(messageService.getAllMessagesByUser(account_id));
+    }
 }

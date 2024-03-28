@@ -74,10 +74,10 @@ public class MessageService {
 
     }
 
-    // // #8 retrieve all messages written by a particular user.
-    // public List<Message> getAllMessagesByUser(int posted_by) {
-    //     return messageRespository.getMessagesByAccountId(posted_by);
+    // #8 retrieve all messages written by a particular user.
+    public List<Message> getAllMessagesByUser(int posted_by) {
+        return messageRespository.getMessagesByAccountId(posted_by);
     
-    //     }
+        }
 
 }
