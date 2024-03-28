@@ -56,13 +56,15 @@ public class SocialMediaController {
     public ResponseEntity<?> register(@RequestBody Account account) {
             Account registeredAccount = accountService.findAccountByUsername(account.getUsername());
             if (registeredAccount != null)
-                return ResponseEntity.status(409).body(null);
+                return ResponseEntity.status(409)
+                    .body(null);
 
             Account verifiedAccount = accountService.register(account);
             if (verifiedAccount != null) {
                 return ResponseEntity.ok(verifiedAccount);
             } else {
-                return ResponseEntity.status(400).body(null);
+                return ResponseEntity.status(400)
+                    .body(null);
             }
     }
 
@@ -74,54 +76,61 @@ public class SocialMediaController {
         if (login != null && login.getPassword().equals(account.getPassword())) {
             return ResponseEntity.status(200).body(login);
         }
-        return ResponseEntity.status(401).body(null);
+        return ResponseEntity.status(401)
+            .body(null);
     }
 
     // #3 process the creation of new messages.
-    // @PostMapping("messages")
-    // public ResponseEntity<Message> addNewMessage(@RequestBody Message newMessage) {
-    //     Message createdMessage = messageService.addNewMessage(newMessage);
-    //     return ResponseEntity.status(HttpStatus.CREATED)
-    //         .body(createdMessage);
-    // }
+    @PostMapping("messages")
+    public ResponseEntity<Message> addNewMessage(@RequestBody Message newMessage) {
+        Message createdMessage = messageService.addNewMessage(newMessage);
+        if (createdMessage != null) {
+            return ResponseEntity.status(200)
+                .body(createdMessage);
+        }
+        return ResponseEntity.status(400)
+            .body(null);
+    }
 
 
-    // // #4 retrieve all messages.
-    // @GetMapping("messages")
-    // public @ResponseBody List<Message> getAllMessages() {
-    //     return messageService.getAllMessages();
-    // }
+    // #4 retrieve all messages.
+    @GetMapping("messages")
+    public @ResponseBody List<Message> getAllMessages() {
+        return messageService.getAllMessages();
+    }
 
-    // // #5 retrieve a message by its ID.
-    // @GetMapping("messages/{message_id}")
-    // public ResponseEntity<Message> MessageById(@PathVariable int message_id) {
-    //     Message messages = messageService.getMessageById(message_id);
-    //     return ResponseEntity.ok()
-    //         .body(messages);
-    // }
+    // #5 retrieve a message by its ID.
+    @GetMapping("messages/{message_id}")
+    public ResponseEntity<Message> MessageById(@PathVariable int message_id) {
+        Message messages = messageService.getMessageById(message_id);
+        return ResponseEntity.ok()
+            .body(messages);
+    }
 
-    // //#6 delete a message identified by a message ID.
+    //#6 delete a message identified by a message ID.
 
-    // @DeleteMapping("messages/{message_id}")
-    // public ResponseEntity<?> deleteMessage(@PathVariable int message_id) {
-    //     boolean deleted = messageService.deleteMessage(message_id); 
-    //     if (deleted) {
-    //         return ResponseEntity.ok()
-    //             .body(1);
-    //     } else {
-    //         return ResponseEntity.ok()
-    //             .body(null);
-    //     }
-    // }
+    @DeleteMapping("messages/{message_id}")
+    public ResponseEntity<?> deleteMessage(@PathVariable int message_id) {
+        boolean deleted = messageService.deleteMessage(message_id); 
+        if (deleted) {
+            return ResponseEntity.ok()
+                .body(1);
+        } else {
+            return ResponseEntity.ok()
+                .body(null);
+        }
+    }
 
     // #7 update a message text identified by a message ID.
 
-    // @PatchMapping("messages/{message_id}")
-    // public @ResponseBody ResponseEntity<String> updateMessage( @RequestBody Message updatedMessage) {
-    //     messageService.updateMessage(updatedMessage);
-    //     return ResponseEntity.ok()
-    //             .body("Message successfully updated.");
-    //     }
+    @PatchMapping("messages/{message_id}")
+    public ResponseEntity<Integer> updateMessage(@RequestParam "message_id"
+                                                    Integer variable 
+                                    @ResquestBody Message updatedMessage) {
+        messageService.updateMessage(updatedMessage);
+        return ResponseEntity.ok()
+                .body();
+        }
 
     // #8 retrieve all messages written by a particular user.
     
