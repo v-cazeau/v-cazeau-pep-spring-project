@@ -2,14 +2,12 @@ package com.example.service;
 
 import com.example.entity.Message;
 import com.example.repository.MessageRepository;
-import com.example.exception.ResourceNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import javax.swing.text.html.Option;
 
 @Service
 public class MessageService {
@@ -57,7 +55,6 @@ public class MessageService {
 
     // #7 update a message text identified by a message ID. (PATCH)
     public Integer updateMessage(Integer message_id, Message messageUpdate) {
-        Message updatedMessage = messageRespository.findById(message_id).orElse(messageUpdate);
         Optional<Message> existingMessage = messageRespository.findById(message_id);
 
         if (!existingMessage.isPresent()) {
@@ -69,7 +66,9 @@ public class MessageService {
         if (messageUpdate.getMessage_text().length() > 255) {
             return 0;
         }
-        messageRespository.save(updatedMessage);
+        Message message = existingMessage.get();
+        message.setMessage_text(messageUpdate.getMessage_text());
+        messageRespository.save(message);
         return 1;
 
     }

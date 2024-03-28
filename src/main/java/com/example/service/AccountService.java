@@ -1,17 +1,11 @@
 package com.example.service;
 
 import com.example.entity.Account;
-import com.example.exception.ResourceNotFoundException;
 import com.example.repository.AccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
-import javax.naming.AuthenticationException;
 
 @Service
 public class AccountService {
